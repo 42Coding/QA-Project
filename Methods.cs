@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 
 namespace QA_Project
 {
@@ -8,32 +8,51 @@ namespace QA_Project
     {
         private List<QA42> memory = new List<QA42>();
         private static String NoMatchMessage = "The answer to life, universe and everything is 42";
-        private const char ql = '?';
+        private static String WarningMessage = "max. 255 characters length";
+        private char[] separators = new char[] { '?', '"' };
+        private Boolean IsValid(String value)
+        {
+            if (value is null) { return false; }
+            return value.Length < 256 && value.Length > 0;
+        }
         public void Add(String Line)
         {
-            String[] Parse = Line.Split(ql, StringSplitOptions.None);
-            String Question = Parse[0] + ql;
-            if (!Question.Equals(string.Empty)) // No Question No Awnser
+            if (Line is null) { Console.WriteLine("[NullException] Question."); return; }
+            String Question = Line.Split(separators[0], StringSplitOptions.None)[0].Trim();
+            if (IsValid(Question)) // No Question No Awnser
             {
-                Line = Line.Remove(0, Question.Length);
-                Parse = Line.Split('"', StringSplitOptions.None);
+                Question += separators[0];
+                String[] Parse = Line.Remove(0, Question.Length).Split(separators[1], StringSplitOptions.None);
                 QA42 QA = new QA42();
                 QA.Question = Question;
-                foreach(String Awnser in Parse)
+                foreach(var Awnser in Parse.Select((value, index) => new { value, index }))
                 {
-                    if (!Awnser.Equals(String.Empty))
+                    string awnser = Awnser.value.Trim();
+                    int index = Awnser.index + 1;
+                    if (IsValid(awnser))
                     {
-                        QA.Awnsers.Add(Awnser);
+                        QA.Awnsers.Add(awnser);
+                    }
+                    else if(index % 2 == 0) // Check index is odd
+                    {
+                        Console.WriteLine("Awnser ("+index.ToString()+"): " + WarningMessage);
                     }
                 }
                 memory.Add(QA);
             }
+            else
+            {
+                Console.WriteLine("Question: " + WarningMessage);
+            }
         }
         public List<String> Search(String Question)
         {
-            foreach (QA42 QA in memory)
+            if (IsValid(Question))
             {
-                return QA.Match(Question);
+                foreach (QA42 QA in memory)
+                {
+                    return QA.Match(Question);
+                }
             }
             return new List<String> { NoMatchMessage };
         }

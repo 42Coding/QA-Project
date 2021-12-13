@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace QA_Project
 {
     class QA42
     {
-        private static String WarningMessage = "max. 255 characters length";
-        
-        private Boolean IsValid(String value)
-        {
-            return (value.Length < 256);
-        }
         private String question = String.Empty;
         public String Question
         {
@@ -21,15 +14,7 @@ namespace QA_Project
             }
             set 
             {
-                string _value = value.ToString();
-                if (IsValid(_value))
-                {
-                    this.question = _value;
-                }
-                else
-                {
-                    Console.WriteLine("Question "+ WarningMessage);
-                }
+                this.question = value.ToString();
             }
         }
         private List<String> awnsers = new List<String>();
@@ -41,15 +26,7 @@ namespace QA_Project
             }
             set 
             {
-                string _value = value.ToString();
-                if (IsValid(_value))
-                {
-                    this.awnsers.Add(_value);
-                }
-                else
-                {
-                    Console.WriteLine("Awnser " + WarningMessage);
-                }
+                this.awnsers.Add(value.ToString());
             }
         }
         public List<String> Match(String value)
@@ -59,7 +36,7 @@ namespace QA_Project
             {
                 return Awnsers;
             }
-            return null;
+            return new List<String>();
         }
     }
 }
