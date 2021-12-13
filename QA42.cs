@@ -17,16 +17,16 @@ namespace QA_Project
                 this.question = value.ToString();
             }
         }
-        private List<String> awnsers = new List<String>();
-        public List<String> Awnsers
+        private List<String> answers = new List<String>();
+        public List<String> Answers
         {
             get 
             { 
-                return awnsers; 
+                return answers; 
             }
             set 
             {
-                this.awnsers.Add(value.ToString());
+                this.answers.Add(value.ToString());
             }
         }
         public List<String> Match(String value)
@@ -34,7 +34,7 @@ namespace QA_Project
             bool match = value.Equals(question);
             if(match)
             {
-                return Awnsers;
+                return Answers;
             }
             return new List<String>();
         }

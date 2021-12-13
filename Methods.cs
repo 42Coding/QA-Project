@@ -25,13 +25,13 @@ namespace QA_Project
                 String[] Parse = Line.Remove(0, Question.Length).Split(separators[1], StringSplitOptions.None);
                 QA42 QA = new QA42();
                 QA.Question = Question;
-                foreach(var Awnser in Parse.Select((value, index) => new { value, index }))
+                foreach(var Answers in Parse.Select((value, index) => new { value, index }))
                 {
-                    string awnser = Awnser.value.Trim();
-                    int index = Awnser.index + 1;
-                    if (IsValid(awnser))
+                    string answers = Answers.value.Trim();
+                    int index = Answers.index + 1;
+                    if (IsValid(answers))
                     {
-                        QA.Awnsers.Add(awnser);
+                        QA.Answers.Add(answers);
                     }
                     else if(index % 2 == 0) // Check index is odd
                     {
