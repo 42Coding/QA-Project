@@ -52,17 +52,14 @@ namespace QA_Project
                 }
             }
         }
-        public Boolean Match(String value)
+        public List<String> Match(String value)
         {
             bool match = value.Equals(question);
             if(match)
             {
-                foreach(String A in Awnsers)
-                {
-                    Console.WriteLine(A);
-                }
+                return Awnsers;
             }
-            return match;
+            return null;
         }
     }
 }
