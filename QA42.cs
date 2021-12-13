@@ -20,7 +20,7 @@ namespace QA_Project
         private List<String> answers = new List<String>();
         public List<String> Answers
         {
-            get 
+            get
             { 
                 return answers; 
             }
@@ -31,8 +31,7 @@ namespace QA_Project
         }
         public List<String> Match(String value)
         {
-            bool match = value.Equals(question);
-            if(match)
+            if (value.Equals(question))
             {
                 return Answers;
             }

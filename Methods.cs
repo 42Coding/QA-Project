@@ -10,6 +10,10 @@ namespace QA_Project
         private static String NoMatchMessage = "The answer to life, universe and everything is 42";
         private static String WarningMessage = "max. 255 characters length";
         private char[] separators = new char[] { '?', '"' };
+        public Int32 Count()
+        {
+            return memory.Count;
+        }
         private Boolean IsValid(String value)
         {
             if (value is null) { return false; }
@@ -38,23 +42,31 @@ namespace QA_Project
                         Console.WriteLine("Awnser ("+index.ToString()+"): " + WarningMessage);
                     }
                 }
-                memory.Add(QA);
+
+                if (QA.Answers.Count > 0)
+                {
+                    memory.Add(QA);
+                }
             }
             else
             {
                 Console.WriteLine("Question: " + WarningMessage);
             }
         }
-        public List<String> Search(String Question)
+        public void Search(String Question)
         {
             if (IsValid(Question))
             {
                 foreach (QA42 QA in memory)
                 {
-                    return QA.Match(Question);
+                    List<String> Answers = QA.Match(Question);
+                    if(Answers.Count>0)
+                    {
+                        Answers.ForEach(Console.WriteLine); return;
+                    }
                 }
             }
-            return new List<String> { NoMatchMessage };
+            Console.WriteLine(NoMatchMessage);
         }
     }
 }

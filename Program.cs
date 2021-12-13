@@ -25,8 +25,9 @@ namespace QA_Project
                 if (YES(Console.ReadLine()))
                 {
                     Console.WriteLine("Enter your questions:");
-                    memory.Search(Console.ReadLine()).ForEach(Console.WriteLine);
+                    memory.Search(Console.ReadLine());
                 }
+                Console.WriteLine(memory.Count().ToString());
                 Console.WriteLine("Exit Program? (y/n)");
             }
             while (!YES(Console.ReadLine()));
