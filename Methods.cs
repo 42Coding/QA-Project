@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Linq;
+//using System.Linq;
 using System.Collections.Generic;
+//using System.Text.RegularExpressions;
 
 namespace QA_Project
 {
@@ -8,38 +9,51 @@ namespace QA_Project
     {
         private List<QA42> memory = new List<QA42>();
         private static String NoMatchMessage = "The answer to life, universe and everything is 42";
-        private static String WarningMessage = "max. 255 characters length";
+        private static String WarningMessage = "is invalid (max. 255 characters length).";
         private char[] separators = new char[] { '?', '"' };
-        public Int32 Count()
-        {
-            return memory.Count;
-        }
         private Boolean IsValid(String value)
         {
-            if (value is null) { return false; }
-            return value.Length < 256 && value.Length > 0;
+            if (String.IsNullOrEmpty(value)) { return false; }
+            return value.Length < 256;
+        }
+        private String[] GetSubStringsBetween(String s, char c)
+        {
+            String[] SubStringsBetween = new String[0];
+            for (int i = s.IndexOf(c); i > -1; i = s.IndexOf(c, i + 1))
+            {
+                int x = i + 1;
+                int next = s.IndexOf(c, x);
+                if (next == -1) { return SubStringsBetween; }
+                int end = next - x;
+                Array.Resize(ref SubStringsBetween, SubStringsBetween.Length + 1);
+                SubStringsBetween[SubStringsBetween.Length -1] = s.Substring(x, end);
+                i = next;
+            }
+            return SubStringsBetween;
         }
         public void Add(String Line)
         {
-            if (Line is null) { Console.WriteLine("[NullException] Question."); return; }
-            String Question = Line.Split(separators[0], StringSplitOptions.None)[0].Trim();
-            if (IsValid(Question)) // No Question No Awnser
+            if (Line is null) { Console.WriteLine("Line is null!"); return; }
+            int q = Line.IndexOf(separators[0]);
+            if (q == -1) { Console.WriteLine("Please enter a Question."); return;  }
+            String Question = Line.Substring(0, q + 1).Trim();
+            if (IsValid(Question))
             {
-                Question += separators[0];
-                String[] Parse = Line.Remove(0, Question.Length).Split(separators[1], StringSplitOptions.None);
+                String[] SubStrings = GetSubStringsBetween(Line.Remove(0, Question.Length), separators[1]);
                 QA42 QA = new QA42();
                 QA.Question = Question;
-                foreach(var Answers in Parse.Select((value, index) => new { value, index }))
+                //foreach(var Answers in SubStrings.Select((value, index) => new { value, index }))
+                for(int i = 0;i<SubStrings.Length;i++)
                 {
-                    string answers = Answers.value.Trim();
-                    int index = Answers.index + 1;
+                    int index = i + 1;
+                    string answers = SubStrings[i].Trim();
                     if (IsValid(answers))
                     {
                         QA.Answers.Add(answers);
                     }
-                    else if(index % 2 == 0) // Check index is odd
+                    else if(index % 2 == 0)
                     {
-                        Console.WriteLine("Awnser ("+index.ToString()+"): " + WarningMessage);
+                        Console.WriteLine("Awnser ("+ index.ToString()+"): " + WarningMessage);
                     }
                 }
 
